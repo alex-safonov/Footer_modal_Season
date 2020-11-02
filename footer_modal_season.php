@@ -29,8 +29,6 @@
 </script>
 
 <?
-
-
 $year_for_season = date("Y");
 $date_today = strtotime (date("d.m.Y"));
 // echo $date_today;
@@ -63,28 +61,65 @@ $end_autumn = strtotime("30.11.$year_for_season");
 
 
 if(($start_winter <= $date_today && $date_today <= $end_winter)){
-        echo 'Winter!';
-        $season_now = "s1";
+        //echo 'Winter!';
+        $season_now = "s1";        
 }
 if(($start_spring <= $date_today && $date_today <= $end_spring)){
-        echo 'Spring!';
+        //echo 'Spring!';
         $season_now = "s2";
 }
 if(($start_summer <= $date_today && $date_today <= $end_summer)){
-        echo 'Summer!';
+        //echo 'Summer!';
         $season_now = "s3";
 }
 if(($start_autumn <= $date_today) && ($date_today <= $end_autumn)){
-        echo 'Autumn!';
+        //echo 'Autumn!';
         $season_now = "s4";
+        // echo $season_now;
 }
 
-echo 'SEASON_'.$season_now.'_'.$year_for_season.'';
+$array_data = explode(";", $curVol->GetData()['PROPS']['ACHIEVE_HERO_SEASON']['VALUE']);
+// print_r(end($array_data));
+				// foreach ($array_data as $key => $value_main) {
+					 $array_data_season[$key] = explode(",", end($array_data));
+ // print_r($array_data_season);
+
+					// } 
+				foreach ($array_data_season as $key => $value) {
+
+				switch ($value[1]) {
+			    case s1:
+			        $season_modal_1 = "зимы";
+			        $season_modal_2 = "этой зимой";
+			        break;
+			    case s2:
+			        $season_modal_1 = "весны";
+			        $season_modal_2 = "этой весной";
+			        break;
+			    case s3:
+			        $season_modal_1 = "лета";
+			        $season_modal_2 = "этим летом";
+			        break;
+			    case s4:
+			        $season_modal_1 = "осени";
+			        $season_modal_2 = "этой осенью";
+			        break;
+				}}
+
+// echo 'SEASON_'.$season_now.'_'.$year_for_season.'';
 
 //if (!isset($_COOKIE['SEASON_'.$season_now.'_'.$year_for_season.'']))   
 //{   
 //setcookie('SEASON_'.$season_now.'_'.$year_for_season.'',1,time()+31556926, '/');
 ?>
+
+<? if (($year_for_season == $value[0]) && ($season_now == $value[1])) { 
+
+	// if (!isset($_COOKIE['SEASON_'.$season_now.'_'.$year_for_season.'']))   
+	// 	{   
+	// 	setcookie('SEASON_'.$season_now.'_'.$year_for_season.'',1,time()+31556926, '/'); 
+?> 
+
 <div class="modal fade poll-modal" tabindex="-1" role="dialog"
      aria-labelledby="poll-modal"
      aria-hidden="true">
@@ -93,9 +128,9 @@ echo 'SEASON_'.$season_now.'_'.$year_for_season.'';
 
         	<img src="/upload/medialibrary/ACHIEVE_HERO_SEASON.svg">
 
-            <!-- <p class="footer_modal_award">Привет, <?= $curVol->GetData()['PROPS']['NAME']['VALUE'] ?>!  <br> -->
-            <p class="footer_modal_award">Привет, <? print_r($curVol->GetData()['PROPS']['ACHIEVE_HERO_SEASON']['VALUE']) ?>!  <br>
-	        Ты можешь получить бейдж «Герой лета 2020», если этим летом успешно выполнишь 100500 заданий для благотворительных фондов.</p>
+            <p class="footer_modal_award">Привет, <?= $curVol->GetData()['PROPS']['NAME']['VALUE'] ?>!  <br>
+            <!-- <p class="footer_modal_award">Привет, <? print_r($curVol->GetData()['PROPS']['ACHIEVE_HERO_SEASON']['VALUE']) ?>!  <br> -->
+	        Ты можешь получить бейдж «Герой <?=$season_modal_1?>-<?=$year_for_season?>», если <?=$season_modal_2?> успешно выполнишь <?=$value[3]?> заданий для благотворительных фондов.</p>
 
 			<p class="footer_modal_award_info">Готов стать героем?</p>
 
@@ -103,9 +138,13 @@ echo 'SEASON_'.$season_now.'_'.$year_for_season.'';
         </div>
     </div>
 </div>
-<? //} ?>
+	<? //} ?>
+<? } ?>
 
 <!-- Вот такой надо: 
 Эльза, ты можешь получить бейдж «Герой лета 2020», если этим летом успешно выполнишь 100500 заданий для благотворительных фондов. Готов стать героем?
 
 Кнопка: Да! -->
+
+<!-- Текущие: Герой сезона -->
+				
